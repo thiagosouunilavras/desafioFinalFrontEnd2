@@ -51,6 +51,7 @@ document.getElementById('btnSalvarProd').addEventListener('click', function () {
    let preco = parseInt(document.getElementById('preco').value);
    let marca = document.getElementById('marca').value.trim();
    let categoria = document.getElementById('categoria').value.trim();
+   let urlFoto = document.getElementById("imagem").value;
 
    let erro = document.getElementById("erro");
 
@@ -74,6 +75,10 @@ document.getElementById('btnSalvarProd').addEventListener('click', function () {
       return erro.innerText = "Categoria deve ter entre 3 e 50 caracteres.";
    }
 
+   if (!validarURL(urlFoto)) {
+        return erro.innerText = "URL da foto é inválida.";
+   }
+
    erro.innerText = "";
 
    // Fecha o modal antes de enviar o usuário
@@ -87,23 +92,24 @@ document.getElementById('btnSalvarProd').addEventListener('click', function () {
 
    const fileInput = document.getElementById('imagem');
    const file = fileInput.files[0];
+   
+   //se fosse usar um type file converter base64
+//    if (file) {
+//       const reader = new FileReader();
+//       reader.onload = function (event) {
 
-   if (file) {
-      const reader = new FileReader();
-      reader.onload = function (event) {
+//          const base64Image = event.target.result;
 
-         const base64Image = event.target.result;
+//          enviarProduto(base64Image, titulo, descricao, preco, marca, categoria);
+//       };
+//       reader.readAsDataURL(file); // Converte para Base64
+//    } 
 
-         enviarProduto(base64Image, titulo, descricao, preco, marca, categoria);
-      };
-      reader.readAsDataURL(file); // Converte para Base64
-   } else {
-      // Caso não tenha imagem, envia em branco ou uma imagem padrão
-      enviarProduto('https://images.tcdn.com.br/img/img_prod/1376235/camisa_nike_corinthians_oficial_i_oficial_3175_1_cfde25a0e99fd3611a6440f4d517b255.jpg', titulo, descricao, preco, marca, categoria);
-   }
+      enviarProduto(urlFoto,titulo,descricao,preco,marca,categoria);
+
 });
 
-function enviarProduto(imageBase64, titulo, descricao, preco, marca, categoria) {
+function enviarProduto(image,titulo,descricao,preco,marca,categoria) {
 
    const user = {
       title: titulo,
@@ -111,7 +117,7 @@ function enviarProduto(imageBase64, titulo, descricao, preco, marca, categoria) 
       price: preco,
       brand: marca,
       category: categoria,
-      thumbnail: imageBase64
+      thumbnail: image
    };
 
    fetch("https://dummyjson.com/products/add", {

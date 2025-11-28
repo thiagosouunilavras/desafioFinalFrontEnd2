@@ -54,6 +54,7 @@ document.getElementById('btnSalvar').addEventListener('click', function() {
     let sobrenome = document.getElementById('sobrenome').value.trim();
     let email = document.getElementById('email').value.trim();
     let idade = parseInt(document.getElementById('idade').value);
+    let urlFoto = document.getElementById("foto").value;
 
     let erro = document.getElementById("erro");
 
@@ -73,6 +74,10 @@ document.getElementById('btnSalvar').addEventListener('click', function() {
         return erro.innerText = "Idade deve ser maior que 0 e menor que 120.";
     }
 
+    if (!validarURL(urlFoto)) {
+        return erro.innerText = "URL da foto é inválida.";
+    }
+
     erro.innerText = "";
 
     // Fecha o modal antes de enviar o usuário
@@ -84,7 +89,8 @@ document.getElementById('btnSalvar').addEventListener('click', function() {
     document.body.classList.remove('modal-open');
     document.body.style = "";
 
-    const fileInput = document.getElementById('foto');
+    //se fosse usar um type file converter base64
+    /* const fileInput = document.getElementById('foto');
     const file = fileInput.files[0];
 
     if (file) {
@@ -96,21 +102,21 @@ document.getElementById('btnSalvar').addEventListener('click', function() {
             enviarUsuario(base64Image, nome, sobrenome, email, idade);
         };
         reader.readAsDataURL(file); // Converte para Base64
-    } else {
-        // Caso não tenha imagem, envia em branco ou uma imagem padrão
-        enviarUsuario("https://i.pravatar.cc/150?img=50", nome, sobrenome, email, idade);
-    }
+    } */ 
+        
+        enviarUsuario(urlFoto, nome, sobrenome, email, idade);
+    
 
 });
 
-function enviarUsuario(imageBase64, nome, sobrenome, email, idade) {
+function enviarUsuario(image, nome, sobrenome, email, idade) {
 
     const user = {
         firstName: nome,
         lastName: sobrenome,
         email: email,
         age: idade,
-        image: imageBase64
+        image: image
     };
 
     fetch("https://dummyjson.com/users/add", {
