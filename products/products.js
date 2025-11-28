@@ -90,8 +90,8 @@ document.getElementById('btnSalvarProd').addEventListener('click', function () {
    document.body.classList.remove('modal-open');
    document.body.style = "";
 
-   const fileInput = document.getElementById('imagem');
-   const file = fileInput.files[0];
+//    const fileInput = document.getElementById('imagem');
+//    const file = fileInput.files[0];
    
    //se fosse usar um type file converter base64
 //    if (file) {
